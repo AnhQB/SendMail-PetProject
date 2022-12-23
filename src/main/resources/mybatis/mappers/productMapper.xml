@@ -1,0 +1,74 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="fsoft.jits.mapper.productMapper"> 
+    <select id="findAll" resultType="Product">
+        SELECT Id id, CategoryId categoryId, SubcategoryId subcategoryId, 
+    	Name name, Price price, Image image
+        FROM Products;
+    </select>
+    <select id="findById" resultType="Product">
+        SELECT Id id, CategoryId categoryId, SubcategoryId subcategoryId, 
+    	Name name, Price price
+        FROM Products 
+        WHERE id = #{id};
+    </select>
+    <insert id="insertProduct">
+    	INSERT INTO Products(CategoryId, SubcategoryId, Name, Price, Image)
+    	VALUES 
+   		(#{categoryId}, #{subcategoryId}, #{name}, #{price}, #{image})
+    </insert>
+    <delete id="deleteById">
+    	DELETE from Products where Id = #{id}
+	</delete>
+	<update id="updateProduct">
+		UPDATE Products set 
+		CategoryId = #{categoryId},
+		SubcategoryId = #{subcategoryId},
+		Name = #{name},
+		Price = #{price}
+		WHERE Id = #{id}
+	</update>
+	<select id="findSearch" resultType="Product">
+		SELECT * FROM Products
+		<if test="name!=null and from == -1 and to == -1">
+			<bind name="searchName" value="'%' + name + '%'"/>
+			WHERE Name like #{searchName}
+		</if>
+		<if test="(name==null or name == '' ) and from != -1 and to != -1  and from != to">
+			WHERE Price between #{from} and #{to}
+		</if>
+		<if test="name!=null and name != '' and from != -1 and to != -1">
+			<bind name="searchName" value="'%' + name + '%'"/>
+			WHERE Name like #{searchName} and (Price between #{from} and #{to})
+		</if>
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+	<select id="countFindSearch" resultType="int">
+		SELECT count(*) value FROM Products
+		<if test="name!=null and from == -1 and to == -1">
+			<bind name="searchName" value="'%' + name + '%'"/>
+			WHERE Name like #{searchName}
+		</if>
+		<if test="(name==null or name == '' ) and from != -1 and to != -1 and from != to">
+			WHERE Price between #{from} and #{to}
+		</if>
+		<if test="name!=null and name != '' and from != -1 and to != -1">
+			<bind name="searchName" value="'%' + name + '%'"/>
+			WHERE Name like #{searchName} and (Price between #{from} and #{to})
+		</if>
+	</select>
+	<insert id="insertListProduct" parameterType="java.util.List">
+	    INSERT INTO Products(CategoryId, SubcategoryId, Name, Price, Image)
+    	VALUES 
+    	<foreach collection="list" item="item" open="(" separator="),("  close=")">
+    		#{item.categoryId}, 
+    		#{item.subcategoryId}, 
+    		#{item.name}, 
+    		#{item.price}, 
+    		#{item.image}
+    	</foreach>
+	</insert>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fsoft.jits.mapper.userRoleMapper">
+	<insert id="insert">
+		INSERT INTO User_Roles(
+			User_Id, 
+			Role_Id
+		)
+		VALUES(
+			#{userId},
+			#{roleId}
+		)
+	</insert>
+	<select id="findRoleByUserId" resultType="Role">
+		SELECT 	
+			u.Role_Id roleId,
+			r.Name name
+		FROM User_Roles u
+		LEFT JOIN
+			Roles r 
+			ON r.Role_Id = u.Role_Id
+			
+		WHERE 
+			User_Id = #{userId}
+	</select>
+	<select id="findByUserId">
+		SELECT 
+			User_Id userId,
+			Role_Id roleId
+		FROM User_Roles 
+		WHERE 
+			User_Id = #{userId}
+	</select>
+	
+</mapper>

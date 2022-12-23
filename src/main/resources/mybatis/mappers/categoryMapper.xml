@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fsoft.jits.mapper.categoryMapper">
+	<select id="findAll" resultType="Category">
+		SELECT Id as id, Name as name From categories
+	</select>
+	<insert id="insertListCategory"  parameterType="java.util.List">
+		INSERT INTO categories(name) VALUES 
+		<foreach item="item" collection="list" separator=",">
+		    (#{item.name})
+	    </foreach> 
+	</insert>
+	
+	<insert id="insertCategory" parameterType="Object">
+		INSERT INTO categories(name) VALUES (#{name})
+	</insert>
+	
+	<delete id="deleteCategory">
+		DELETE FROM categories where Id = #{id}
+	</delete>
+	
+	<select id="findCategoryById" resultType="Category">
+		SELECT Id as id, Name as name From categories where Id = #{id}
+	</select>
+	
+	<update id="updateCategory">
+		UPDATE categories set name = #{name} where id = #{id}
+	</update>
+</mapper>

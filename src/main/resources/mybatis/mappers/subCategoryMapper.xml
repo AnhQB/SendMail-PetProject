@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fsoft.jits.mapper.SubCategory">
+	<select id="findAll" resultType="SubCategory">
+		SELECT Id id, CategoryId categoryId, Name name From Subcategories
+	</select>
+	<select id="findAllSearch" resultType="SubCategory">
+		SELECT Id id, CategoryId categoryId, Name name From Subcategories
+		<if test="searchName != null">
+			<bind name="search" value="'%' + searchName + '%'" />
+		    where name like #{search}
+		</if>
+	</select>
+	<insert id="insert" >
+		INSERT INTO Subcategories(CategoryId, Name) VALUES (#{categoryId}, #{name})
+	</insert>
+	<select id="findById" resultType="SubCategory">
+		SELECT * From Subcategories WHERE id = #{id}
+	</select>
+	<update id="update">
+		UPDATE Subcategories set 
+		CategoryId = #{categoryId}
+		, Name = #{name}
+		WHERE Id = #{id}
+	</update>
+	<delete id="deleteCategoryById">
+		DELETE From Subcategories where id = #{id}
+	</delete>
+	<select id="findAllByCateId" resultType="SubCategory">
+		SELECT Id id, CategoryId categoryId, Name name 
+		From Subcategories
+		WHERE CategoryId = #{cateId}
+	</select>
+</mapper>

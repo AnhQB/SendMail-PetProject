@@ -1,0 +1,99 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="fsoft.jits.mapper.userMapper"> 
+    <select id="findAll" resultType="User">
+        SELECT * FROM User;
+    </select>
+    <select id="findByUserName"  resultType="User"> 
+    	SELECT Id id
+    		, Username username
+    		, Email email
+    		, Password password
+    		, Name name
+    		, DOB dob
+    		, Address address
+    		, Enabled enabled
+    		, Verification_code varificationCode
+    		, CreatedDateTime createdDateTime
+    		, UpdatedDateTime updatedDateTime
+   		 FROM Users
+   		 WHERE Username = #{userName} 
+    </select>
+    <insert id="insert">
+   		INSERT INTO Users (
+   			Username, 
+   			Email, 
+   			Password, 
+   			Name, 
+   			DOB, 
+   			Address, 
+   			Enabled, 
+   			Verification_code,
+   			CreatedDateTime, 
+   			UpdatedDateTime
+		) 
+		VALUES (
+			#{username},
+			#{email},
+			#{password},
+			#{name},
+			#{dob},
+			#{address},
+			#{enabled},
+			#{verificationCode},
+			#{createdDateTime},
+			#{updatedDateTime}
+		)		
+    </insert>
+    <select id="findByVerificationCode" resultType="User">
+    	SELECT 
+    		Id id,
+    		Username username, 
+   			Email email, 
+   			Password password, 
+   			Name name, 
+   			DOB dob, 
+   			Address address, 
+   			Enabled enabled, 
+   			CreatedDateTime createdDateTime, 
+   			UpdatedDateTime updatedDateTime
+  		FROM Users
+		WHERE Verification_code = #{code}
+    </select>
+    <update id="update">
+    	UPDATE week1.users 
+   		SET
+   			Verification_code = #{verificationCode},
+   			Enabled = #{enabled},
+   			UpdatedDateTime = #{updatedDateTime}
+   		WHERE
+   			Id = #{id}
+    </update>
+    <select id="findById"  resultType="User">
+    	SELECT 
+    		Id id,
+    		Username username, 
+   			Email email, 
+   			Password password, 
+   			Name name, 
+   			DOB dob, 
+   			Address address, 
+   			Enabled enabled, 
+   			Verification_code verificationCode,
+   			CreatedDateTime createdDateTime, 
+   			UpdatedDateTime updatedDateTime
+  		FROM Users
+		WHERE Id = #{id}
+    </select>
+    <update id="changePassword">
+    	UPDATE Users
+    	SET
+    		Password = #{password},
+    		UpdatedDateTime = #{updatedDateTime}
+   		WHERE 
+   			Id = #{id}
+    </update>
+</mapper>
